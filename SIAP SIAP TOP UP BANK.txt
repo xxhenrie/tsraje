@@ -1,0 +1,50 @@
+incmulti  = 2
+incpayout = 0.30
+target    = 50 
+payoutf   = 50
+payout    = payoutf
+chance    = 99 / payout
+losect    = 0
+basebet   = 1e-8
+prebet    = 1e-8
+postbet   = prebet
+nextbet   = prebet
+tarbal    = balance + target
+winc      = 0
+bethigh   = false
+startct   = {100,300,500}
+endct     = 100
+pos       = 1
+betct     = startct[pos]
+sw        = false
+ 
+--resetstats()
+function dobet()
+    if win then
+        if losect > startct[pos] then
+            pos += 1
+        end
+        if sw then stop() end
+        losect  = 0
+        payout  = payoutf
+        nextbet = prebet
+        postbet = prebet
+    else
+        losect += 1
+        payout += incpayout
+        if losect > startct[pos] and losect < startct[pos]+endct then
+            if losect%incmulti == 0 then 
+                nextbet = previousbet * 1.12 
+            end 
+        else
+            nextbet = postbet * 1.05
+            postbet = nextbet
+        end
+        if (losect == startct[pos]) then
+            nextbet = basebet
+        end
+    end
+    chance = 99 / payout
+    if balance > tarbal then stop() end
+    print(pos..":"..startct[pos].."-"..startct[pos]+endct)
+end

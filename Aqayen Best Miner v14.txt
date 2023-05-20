@@ -1,0 +1,44 @@
+--- Aqayen Best Miner v14 ---
+
+-- For more profit and wager scripts, contact me via Telegram = @Aqayen --
+
+p1         = 75
+p2         = 85
+p3         = 39
+p4         = 45
+chance     = math.random(p1*100.0, p2*100.0)/100.0
+zar        = 1.7
+div        = 1e3
+div1       = 8e5
+div2       = 2e5
+base       = balance/div
+add1       = balance/div1
+add2       = balance/div2
+target     = balance * 1.25
+add3       = 100000000
+add4       = 100000000
+s          = math.random(1,2)
+one        = 1
+h1         = math.random(p1*100.0, p2*100.0)/100.0
+h2         = math.random(p3*100.0, p4*100.0)/100.0
+function dobet()
+if (balance >= target) then
+      stop()
+end
+
+r=s
+
+if (r == one) then
+     bethigh=true
+else
+     bethigh=false
+end
+
+   if win then
+      chance  = math.random(p1*100.0, p2*100.0)/100.0
+      nextbet = math.random( (add1 * add3) , (add2 * add4 ) ) / add3
+   else
+      chance = math.random(p3*100.0, p4*100.0)/100.0
+      nextbet = previousbet * zar
+   end
+end

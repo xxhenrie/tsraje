@@ -1,0 +1,60 @@
+-- user-defined settings
+basebet = balance / 5000000
+basechance = 90
+increasebetEveryLosts = 6
+increasebetBy = 1.5
+
+-- internal variables
+chance = basechance
+nextbet = basebet
+lc1 = 0
+lc2 = 0
+sbr = balance
+negs = 0
+lvl = 1
+lvl2 = lvl
+bethigh = true
+stopwin = false
+
+function calc_bet()
+    local co = (1 / chance) * 99
+    local cco = co + (lc2 / increasebetEveryLosts)
+    local pp = basebet * lc1 * (co - 1)
+    local nb = (negs + pp) / (cco - 1)
+    return math.max(nb, basebet)
+end
+
+function dobet()
+    -- handle win/lose
+    if win then
+        if stopwin then stop() end
+        nextbet = basebet
+        chance = basechance
+        lc1 = 0
+        lc2 = 0
+        lvl = 1
+        sbr = balance
+    else
+        -- update variables for lost bet
+        negs = sbr - balance
+        lc1 = lc1 + 1
+        lc2 = lc2 + 1
+
+        -- calculate new bet size
+        if lc2 >= increasebetEveryLosts then
+            lvl = lvl + 1
+            nextbet = nextbet * increasebetBy
+            lc2 = 0
+        end
+        nextbet = calc_bet()
+
+        -- calculate new chance
+        chance = (1 / ((negs + (nextbet * lc1)) / nextbet)) * 99
+    end
+
+    -- check for minimum chance
+    if chance < 5 then chance = 5 end
+
+    -- update maximum level reached
+    if lvl > lvl2 then lvl2 = lvl end
+end

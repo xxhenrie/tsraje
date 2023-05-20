@@ -1,0 +1,47 @@
+--Javer'S | Ablenk040290
+--LHLLHH
+
+
+basebet = 0.003
+chstart = 98
+ctwin   = 0 
+ctlose  = 0 
+profitc = 0 
+chance  = chstart 
+nextbet = basebet 
+ 
+ 
+function dobet() 
+ if win then 
+  ctwin  = ctwin + 1 
+  ctlose = 0 
+ else 
+  ctwin  = 0 
+  ctlose = ctlose + 1 
+  chance = 49.5
+ end 
+ 
+ if ctwin%1==0 and ctwin > 0 then 
+  bethigh = not bethigh 
+ end 
+  if ctwin%1==0 and ctlose > 0 then 
+  bethigh = not bethigh 
+ end 
+  if ctwin%2==0 and ctwin > 0 then 
+  bethigh = not bethigh 
+ end 
+ if ctwin%2==0 and ctlose > 0 then 
+  bethigh = not bethigh 
+ end 
+ 
+ 
+if bets%1==0 then nextbet = previousbet * 2 end 
+ 
+ profitc = profitc + currentprofit
+ if profitc > basebet*3 then 
+  profitc = 0 
+  nextbet = basebet 
+  chance  = chstart
+  resetstats()
+ end 
+end
